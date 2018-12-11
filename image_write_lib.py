@@ -30,7 +30,7 @@ def build_an_image_example(img_fname):
     for x in range(image_x_size):
         for y in range(image_y_size):
             # pick the pixel color as an RGB tuple
-            pixel_color = ( 254, 127, 3)
+            pixel_color = ( 255, 255, 0)
 
             # set the color to the image
             my_image_pixels[x, y] = pixel_color
@@ -38,13 +38,24 @@ def build_an_image_example(img_fname):
     # save the image
     print(f'saving {img_fname}')
     my_image.save(img_fname, 'png')
-
+# yellow rgb(255,255,0)
 
 def build_image_yellow(img_fname, image_x_size=512, image_y_size=512):
     """
     create an image that is full yellow.
     Just yellow at every pixel
     """
+    my_image = Image.new('RGB', (512, 512) )
+    my_image_pixels = my_image.load()
+    image_x_size = my_image.size[0]
+    image_y_size = my_image.size[1]
+
+    for x in range(image_x_size):
+        for y in range(image_y_size):
+            pixel_color = (255, 255, 0)
+            my_image_pixels[x, y] = pixel_color
+    print(f'saving {img_fname}')
+    my_image.save(img_fname, 'png')
     pass
 
 def build_image_double_red_gradient(img_fname):
@@ -54,6 +65,19 @@ def build_image_double_red_gradient(img_fname):
     from left to right.  And when it reaches 255, start over at 0
     and start another gradient from 0 to 255.
     """
+    my_image = Image.new('RGB', (512, 512) )
+    my_image_pixels = my_image.load()
+    image_x_size = my_image.size[0]
+    image_y_size = my_image.size[1]
+
+
+    for x in range(512):
+        for y in range(512):
+            red = x % 256
+            pixel_color = (red, 0, 0)
+            my_image_pixels[x, y] = pixel_color
+    print(f'saving {img_fname}')
+    my_image.save(img_fname, 'png')
     pass
 
 def build_image_single_red_gradient(img_fname):
@@ -62,6 +86,19 @@ def build_image_single_red_gradient(img_fname):
     but 0 has to be the leftmost and 255 has to be the rightmost
     and the gradient scales smoothly across the 512 horizontal pixels.
     """
+    my_image = Image.new('RGB', (512, 512) )
+    my_image_pixels = my_image.load()
+    image_x_size = my_image.size[0]
+    image_y_size = my_image.size[1]
+
+
+    for x in range(512):
+        for y in range(512):
+            red = int(x / 2)
+            pixel_color = (red, 0, 0)
+            my_image_pixels[x, y] = pixel_color
+    print(f'saving {img_fname}')
+    my_image.save(img_fname, 'png')
     pass
 
 
@@ -73,6 +110,19 @@ def build_image_yellow_gradient_horizontal(img_fname):
     Similar to test_single_red_gradient except color yellow instead
     of red
     """
+    my_image = Image.new('RGB', (512, 512) )
+    my_image_pixels = my_image.load()
+    image_x_size = my_image.size[0]
+    image_y_size = my_image.size[1]
+
+
+    for x in range(512):
+        for y in range(512):
+            color = int(x / 2)
+            pixel_color = (color, color, 0)
+            my_image_pixels[x, y] = pixel_color
+    print(f'saving {img_fname}')
+    my_image.save(img_fname, 'png')
     pass
 
 def build_image_cyan_gradient_diagonal(img_fname):
@@ -83,6 +133,19 @@ def build_image_cyan_gradient_diagonal(img_fname):
     Consider what the value of x+y is at the top left and at the
     bottom right
     """
+    my_image = Image.new('RGB', (512, 512) )
+    my_image_pixels = my_image.load()
+    image_x_size = my_image.size[0]
+    image_y_size = my_image.size[1]
+
+#   cyan RGB 0, 255, 255
+    for x in range(512):
+        for y in range(512):
+            color = int((x+y) / 4)
+            pixel_color = (0, color, color)
+            my_image_pixels[x, y] = pixel_color
+    print(f'saving {img_fname}')
+    my_image.save(img_fname, 'png')
     pass
 
 def build_image_green_gradient_diagonal_inverted(img_fname):
@@ -91,6 +154,19 @@ def build_image_green_gradient_diagonal_inverted(img_fname):
     This is similar to build_image_cyan_gradient_diagonal except
     green and the 255 is top left and 0 is bottom right.
     """
+    my_image = Image.new('RGB', (512, 512) )
+    my_image_pixels = my_image.load()
+    image_x_size = my_image.size[0]
+    image_y_size = my_image.size[1]
+
+#   cyan RGB 0, 255, 255
+    for x in range(512):
+        for y in range(512):
+            color = 256 - (int((x+y) / 4))
+            pixel_color = (0, color, 0)
+            my_image_pixels[x, y] = pixel_color
+    print(f'saving {img_fname}')
+    my_image.save(img_fname, 'png')
     pass
 
 def build_image_red_bands_horizontal(img_fname):
