@@ -162,7 +162,7 @@ def build_image_green_gradient_diagonal_inverted(img_fname):
 #   cyan RGB 0, 255, 255
     for x in range(512):
         for y in range(512):
-            color = 256 - (int((x+y) / 4))
+            color = 255 - int((x+y) / 4)
             pixel_color = (0, color, 0)
             my_image_pixels[x, y] = pixel_color
     print(f'saving {img_fname}')
@@ -177,6 +177,23 @@ def build_image_red_bands_horizontal(img_fname):
     Each red horizontal bar is 10 pixels tall.
     Each black horizontal bare is also 10 pixels tall
     """
+    my_image = Image.new('RGB', (512, 512) )
+    my_image_pixels = my_image.load()
+    image_x_size = my_image.size[0]
+    image_y_size = my_image.size[1]
+
+
+    for x in range(512):
+        for y in range(512):
+            is_red = int(y/10) % 2
+            if is_red == 0:
+                color = 255
+            else:
+                color = 0
+            pixel_color = (color, 0, 0)
+            my_image_pixels[x, y] = pixel_color
+    print(f'saving {img_fname}')
+    my_image.save(img_fname, 'png')
     pass
 
 def build_image_blue_bands_vertical(img_fname):
@@ -185,6 +202,24 @@ def build_image_blue_bands_vertical(img_fname):
     Each bar is 10 pixels wide.  Similar to build_image_red_bands_horizontal
     except vertical
     """
+    my_image = Image.new('RGB', (512, 512) )
+    my_image_pixels = my_image.load()
+    image_x_size = my_image.size[0]
+    image_y_size = my_image.size[1]
+
+
+    for x in range(512):
+        for y in range(512):
+            is_blue = int(x/10) % 2
+            if is_blue == 0:
+                color = 255
+            else:
+                color = 0
+
+            pixel_color = (0, 0, color)
+            my_image_pixels[x, y] = pixel_color
+    print(f'saving {img_fname}')
+    my_image.save(img_fname, 'png')
     pass
 
 def build_image_plaid_blue_and_red(img_fname):
@@ -192,6 +227,28 @@ def build_image_plaid_blue_and_red(img_fname):
     red horizontal bands and blue vertical bands combined/overlayed onto
     each other.
     """
+    my_image = Image.new('RGB', (512, 512) )
+    my_image_pixels = my_image.load()
+    image_x_size = my_image.size[0]
+    image_y_size = my_image.size[1]
+
+
+    for x in range(512):
+        for y in range(512):
+            is_blue = int(x/10) % 2
+            if is_blue == 0:
+                blue = 255
+            else:
+                blue = 0
+            is_red = int(y/10) % 2
+            if is_red == 0:
+                red = 255
+            else:
+                red = 0
+            pixel_color = (red, 0, blue)
+            my_image_pixels[x, y] = pixel_color
+    print(f'saving {img_fname}')
+    my_image.save(img_fname, 'png')
     pass
 
 def build_image_banding_with_gradient_red(img_fname):
@@ -199,6 +256,24 @@ def build_image_banding_with_gradient_red(img_fname):
     The red banding, but with a left-to-right blue/green intensity gradient
     ie., a gradient from 0 to 255 that goes from left to right of CYAN (blue/green)
     """
+    my_image = Image.new('RGB', (512, 512) )
+    my_image_pixels = my_image.load()
+    image_x_size = my_image.size[0]
+    image_y_size = my_image.size[1]
+
+
+    for x in range(512):
+        for y in range(512):
+            is_red = int(y/10) % 2
+            if is_red == 0:
+                red = 255
+            else:
+                red = 0
+            color = int(x/2)
+            pixel_color = (red, 0, color)
+            my_image_pixels[x, y] = pixel_color
+    print(f'saving {img_fname}')
+    my_image.save(img_fname, 'png')
     pass
 
 
@@ -213,6 +288,15 @@ def build_palette_dictionary(palette_fname):
     return the dictionary
     """
     my_palette_dict = dict()
+    with open(palette_fname, 'r')  as f:
+        read_csv= csv.reader(f)
+        for row in read_csv:
+            key=int(row[0])
+            red=int((row[1]).lstrip())
+            green=int((row[2]).lstrip())
+            blue=int((row[3]).lstrip())
+            my_palette_dict[key]=red, green, blue
+
 
     return my_palette_dict
 
@@ -231,13 +315,40 @@ def build_image_using_palette(img_fname, palette_dict):
         subtract the y square from the x square then take the abs of it
         multiple the x coordinate and the y coordinate and then double it
         add those two together
-        take the square root of that.
+        take the square root of that
+        Make sure this is an INT.
         divide it by the palette_max+1 (355 in our case) and take the remainder.
-        Make sure this is an INT
+
 
         This is your value
 
     Now, using the value, find the RGB color in the palette.  Set the
     pixel to that color
     """
+    my_image = Image.new('RGB', (512, 512) )
+    my_image_pixels = my_image.load()
+    image_x_size = my_image.size[0]
+    image_y_size = my_image.size[1]
+
+
+    for x in range(512):
+        for y in range(512):
+            x_squared=x**2
+            y_squared=y**2
+            abs_value=abs(x_squared-y_squared)
+            x_y_multiplication=x*y*2
+            added=abs_value+x_y_multiplication
+            square_root = int(sqrt(added))
+            modded = square_root % 355
+
+
+            color = palette_dict[modded]
+            pixel_color = color
+            my_image_pixels[x, y] = pixel_color
+    print(f'saving {img_fname}')
+    my_image.save(img_fname, 'png')
     pass
+"""
+functions to read the a CSV file
+and put it into a dictionary
+"""
