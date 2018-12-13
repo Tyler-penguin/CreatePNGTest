@@ -305,8 +305,19 @@ def calculate(x, y):
     x_y_multiplication=x*y*2
     added=abs_value+x_y_multiplication
     square_root = int(sqrt(added))
-    modded = square_root % 355
+    modded = square_root % 256
     return modded
+
+def calculate2(z, z0):
+    if abs(z) > 3:
+        i = 0
+    else:
+        for i in range(255):
+            i +=1
+            z = z**2 + z0
+            if abs(z) > 3:
+                break
+    return i
 def build_image_using_palette(img_fname, palette_dict):
     """
     TROPHY
@@ -331,14 +342,18 @@ def build_image_using_palette(img_fname, palette_dict):
     Now, using the value, find the RGB color in the palette.  Set the
     pixel to that color
     """
-    my_image = Image.new('RGB', (512, 512) )
+    my_image = Image.new('RGB', (1400, 800) )
     my_image_pixels = my_image.load()
     image_x_size = my_image.size[0]
     image_y_size = my_image.size[1]
 
-    for x in range(512):
-        for y in range(512):
-            number=calculate(x, y)
+    for x in range(1400):
+        for y in range(800):
+            new_x = x*3.5/1400 - 2.5
+            new_y = y*2/800 - 1
+            z=new_x+new_y*1j
+            z0=z
+            number=calculate2(z, z0)
             color = palette_dict[number]
             pixel_color = color
             my_image_pixels[x, y] = pixel_color
