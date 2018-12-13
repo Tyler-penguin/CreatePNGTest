@@ -296,11 +296,17 @@ def build_palette_dictionary(palette_fname):
             green=int((row[2]).lstrip())
             blue=int((row[3]).lstrip())
             my_palette_dict[key]=red, green, blue
-
-
     return my_palette_dict
 
-
+def calculate(x, y):
+    x_squared=x**2
+    y_squared=y**2
+    abs_value=abs(x_squared-y_squared)
+    x_y_multiplication=x*y*2
+    added=abs_value+x_y_multiplication
+    square_root = int(sqrt(added))
+    modded = square_root % 355
+    return modded
 def build_image_using_palette(img_fname, palette_dict):
     """
     TROPHY
@@ -330,19 +336,10 @@ def build_image_using_palette(img_fname, palette_dict):
     image_x_size = my_image.size[0]
     image_y_size = my_image.size[1]
 
-
     for x in range(512):
         for y in range(512):
-            x_squared=x**2
-            y_squared=y**2
-            abs_value=abs(x_squared-y_squared)
-            x_y_multiplication=x*y*2
-            added=abs_value+x_y_multiplication
-            square_root = int(sqrt(added))
-            modded = square_root % 355
-
-
-            color = palette_dict[modded]
+            number=calculate(x, y)
+            color = palette_dict[number]
             pixel_color = color
             my_image_pixels[x, y] = pixel_color
     print(f'saving {img_fname}')
